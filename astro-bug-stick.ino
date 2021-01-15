@@ -18,9 +18,9 @@ char screen[256];
 
 BME280 bme280;
 
-IPAddress server(52,91,115,13);
-char ssid[] = "NETGEAR06"; char password[] = "gentlegiant323";
-//char ssid[] = "SPRING"; char password[] = "2124563829";
+IPAddress server();
+char ssid[] = ""; char password[] = "";
+//char ssid[] = ""; char password[] = "";
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
