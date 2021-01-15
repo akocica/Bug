@@ -21,8 +21,8 @@ Adafruit_BMP280 bme;
 
 IPAddress server(192, 168, 1, 30);
 
-char password[] = "gentlegiant323";
-char ssid[] = "NETGEAR06";
+char password[] = "";
+char ssid[] = "";
 
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
