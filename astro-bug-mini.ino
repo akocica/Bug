@@ -77,8 +77,8 @@ void setup() {
   if(!bme280.begin(0x76)){ Serial.println("FAIL"); }
   delay(100);
  
-  //wifiMulti.addAP("NETGEAR06", "gentlegiant323");
-  //wifiMulti.addAP("SPRING", "2124563829");
+  //wifiMulti.addAP("", "");
+  //wifiMulti.addAP("", "");
   
   update_status("WIFI"); 
   WiFi.begin(ssid, password);
@@ -93,7 +93,7 @@ void setup() {
   
   update_status("MQTT");
   mqttClient.setServer(server, 1883);
-  boolean rc = mqttClient.connect(my_name, "ubuntu", "vul[an");
+  boolean rc = mqttClient.connect(my_name, "", "");
   delay(1000);
   
   T1S.setInterval(2 * 60 * 1000);
@@ -116,7 +116,7 @@ void check_connection() {
   waitCount = 0;
   while (!mqttClient.connected()) {
     update_status("MQTT DOWN");
-    boolean rc = mqttClient.connect(my_name, "ubuntu", "vul[an");
+    boolean rc = mqttClient.connect(my_name, "", "");
     waitCount++;
     if( waitCount >= 12 ) { ESP.restart(); }
     delay(5000);
