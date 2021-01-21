@@ -1,0 +1,822 @@
+[
+    {
+        "id": "be5f7bfc.67ffb8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "ab949c89.3745e",
+        "type": "mqtt in",
+        "z": "be5f7bfc.67ffb8",
+        "name": "MQTT",
+        "topic": "#",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "77751ab7.3fe3a4",
+        "x": 70,
+        "y": 140,
+        "wires": [
+            [
+                "969e8b9b.6e5fc8",
+                "de3c76eb.5e89d8",
+                "36c4b2d5.e40ffe"
+            ]
+        ]
+    },
+    {
+        "id": "969e8b9b.6e5fc8",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "SQL Insert",
+        "func": "var _t = new Date().toISOString().slice(0, 19).replace('T', ' ')\nvar out = \"INSERT INTO store (timestamp,topic,data)\"\nout = out + \"VALUES ('\" + _t + \"','\" \nout = out + msg.topic + \"','\" + msg.payload + \"');\"\nmsg.topic=out;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 270,
+        "y": 100,
+        "wires": [
+            [
+                "2391aac1.584c06"
+            ]
+        ]
+    },
+    {
+        "id": "16378fab.4ee7f",
+        "type": "debug",
+        "z": "be5f7bfc.67ffb8",
+        "name": "SQL",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "x": 550,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2391aac1.584c06",
+        "type": "mysql",
+        "z": "be5f7bfc.67ffb8",
+        "mydb": "78b97fe3.d59cf",
+        "name": "Database",
+        "x": 420,
+        "y": 100,
+        "wires": [
+            [
+                "16378fab.4ee7f"
+            ]
+        ]
+    },
+    {
+        "id": "36c4b2d5.e40ffe",
+        "type": "json",
+        "z": "be5f7bfc.67ffb8",
+        "name": "JSN to JS",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 260,
+        "y": 320,
+        "wires": [
+            [
+                "e87401c3.7243e"
+            ]
+        ]
+    },
+    {
+        "id": "c676bee1.53f66",
+        "type": "ui_chart",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Phone Pressure Chart",
+        "group": "a7acd625.ab3bf8",
+        "order": 4,
+        "width": "8",
+        "height": "4",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "H",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#ad3e00",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 760,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cb16165d.2a47b8",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get Phone P",
+        "func": "var f = {topic:\"Pressure\", payload:msg.payload.p}\nreturn f;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 180,
+        "wires": [
+            [
+                "c676bee1.53f66",
+                "c2da965.6e5ec68"
+            ]
+        ]
+    },
+    {
+        "id": "c2da965.6e5ec68",
+        "type": "ui_text",
+        "z": "be5f7bfc.67ffb8",
+        "group": "a7acd625.ab3bf8",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "Phone Pressure Value",
+        "label": "Pressure",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 760,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "a1f63f27.51d82",
+        "type": "ui_chart",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Phone Battery Chart",
+        "group": "a7acd625.ab3bf8",
+        "order": 6,
+        "width": "8",
+        "height": "3",
+        "label": "",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "H",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#d19d01",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#831100",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 760,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4ef2d581.9c12ac",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get Phone B",
+        "func": "var f = {topic:\"Battery\", payload:msg.payload.batt}\nreturn f;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 260,
+        "wires": [
+            [
+                "ae00f923.1494c8",
+                "a1f63f27.51d82"
+            ]
+        ]
+    },
+    {
+        "id": "ae00f923.1494c8",
+        "type": "ui_text",
+        "z": "be5f7bfc.67ffb8",
+        "group": "a7acd625.ab3bf8",
+        "order": 5,
+        "width": "0",
+        "height": "0",
+        "name": "Phone Battery Value",
+        "label": "Battery",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 760,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "54d1a398.eab74c",
+        "type": "inject",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Every 3 Hours",
+        "topic": "headers",
+        "payload": "token=''",
+        "payloadType": "str",
+        "repeat": "10800",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 120,
+        "y": 520,
+        "wires": [
+            [
+                "2e5f7132.cd0e4e"
+            ]
+        ]
+    },
+    {
+        "id": "f70d83dc.c00e8",
+        "type": "http request",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Request Locality",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "https://api.weather.gov/points/40.7471690,-73.9199318",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 330,
+        "y": 560,
+        "wires": [
+            [
+                "42332d5e.35c284"
+            ]
+        ]
+    },
+    {
+        "id": "2e5f7132.cd0e4e",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Set Header",
+        "func": "msg.headers = {};\nmsg.headers['token'] = 'LbbQscqzokEOBnKqoXEURWNJHLdboNdC';\nmsg.headers['User-Agent'] = 'Tony';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 520,
+        "wires": [
+            [
+                "f70d83dc.c00e8"
+            ]
+        ]
+    },
+    {
+        "id": "42332d5e.35c284",
+        "type": "json",
+        "z": "be5f7bfc.67ffb8",
+        "name": "JSN to JS",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 360,
+        "y": 600,
+        "wires": [
+            [
+                "46981526.f14f7c"
+            ]
+        ]
+    },
+    {
+        "id": "46981526.f14f7c",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Set Header",
+        "func": "msg.headers = {};\nmsg.headers['token'] = 'LbbQscqzokEOBnKqoXEURWNJHLdboNdC';\nmsg.headers['User-Agent'] = 'Tony';\nmsg.url = msg.payload.properties.forecast;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 520,
+        "wires": [
+            [
+                "e7007f6f.c99f9"
+            ]
+        ]
+    },
+    {
+        "id": "e7007f6f.c99f9",
+        "type": "http request",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Request Forecast",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 590,
+        "y": 560,
+        "wires": [
+            [
+                "f8688f7f.63ab8"
+            ]
+        ]
+    },
+    {
+        "id": "f8688f7f.63ab8",
+        "type": "json",
+        "z": "be5f7bfc.67ffb8",
+        "name": "JSN to JS",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 620,
+        "y": 600,
+        "wires": [
+            [
+                "8f1dc055.fc3f7"
+            ]
+        ]
+    },
+    {
+        "id": "8f1dc055.fc3f7",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get Periods",
+        "func": "msg.payload = msg.payload.properties.periods;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 770,
+        "y": 600,
+        "wires": [
+            [
+                "bed9566e.bacb88"
+            ]
+        ]
+    },
+    {
+        "id": "bed9566e.bacb88",
+        "type": "ui_template",
+        "z": "be5f7bfc.67ffb8",
+        "group": "2aa94f08.f1ff8",
+        "name": "Forecast",
+        "order": 2,
+        "width": "12",
+        "height": "9",
+        "format": "\n <div layout=\"row\" layout-align=\"start center\" ng-repeat=\"row in msg.payload\">\n  <span style=\"width:140px\" ng-style=\"{color:row.name.indexOf('Night')==-1 && row.name!=='Tonight'?'blue':'black'}\">{{row.name}}</span>\n  <span style=\"width:40px;color: green\">{{row.temperature}}</span>\n  <span style=\"width:100%;color: black\">{{row.detailedForecast}}</span>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 920,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "de3c76eb.5e89d8",
+        "type": "debug",
+        "z": "be5f7bfc.67ffb8",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 270,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "c74b8e63.88051",
+        "type": "ui_chart",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Temperature Chart",
+        "group": "c728bb76.a036c8",
+        "order": 1,
+        "width": "8",
+        "height": "5",
+        "label": "Temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "H",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1e78b4",
+            "#03b300",
+            "#ff7f0e",
+            "#2c5ea0",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 750,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cda824c7.b63268",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get T",
+        "func": "var p = msg.payload.SU;\nvar e = p[3];\nvar t = p[7];\nvar f = {topic:t, payload:e};\nreturn f;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 320,
+        "wires": [
+            [
+                "c74b8e63.88051"
+            ]
+        ]
+    },
+    {
+        "id": "bdca36ed.b75908",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get H",
+        "func": "var p = msg.payload.SU;\nvar e = p[4];\nvar t = p[7];\nvar f = {topic:t, payload:e};\nreturn f;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 360,
+        "wires": [
+            [
+                "5b88ced3.31a47"
+            ]
+        ]
+    },
+    {
+        "id": "e3cfdd27.781e4",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get P",
+        "func": "var p = msg.payload.SU;\nvar e = p[5]/1000.0;\nvar t = p[7];\nvar f = {topic:t, payload:e};\nreturn f;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 590,
+        "y": 400,
+        "wires": [
+            [
+                "a3fc5b02.b321d8"
+            ]
+        ]
+    },
+    {
+        "id": "e87401c3.7243e",
+        "type": "switch",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Source",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "batt",
+                "vt": "str"
+            },
+            {
+                "t": "hask",
+                "v": "SU",
+                "vt": "str"
+            },
+            {
+                "t": "hask",
+                "v": "CPM",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 400,
+        "y": 320,
+        "wires": [
+            [
+                "cb16165d.2a47b8",
+                "4ef2d581.9c12ac"
+            ],
+            [
+                "cda824c7.b63268",
+                "bdca36ed.b75908",
+                "e3cfdd27.781e4"
+            ],
+            [
+                "b09d536e.3f84e"
+            ]
+        ]
+    },
+    {
+        "id": "a3fc5b02.b321d8",
+        "type": "ui_chart",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Pressure Chart",
+        "group": "c728bb76.a036c8",
+        "order": 1,
+        "width": "8",
+        "height": "5",
+        "label": "Pressure",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "H",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1e78b4",
+            "#03b300",
+            "#ff7f0e",
+            "#2c5ea0",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5b88ced3.31a47",
+        "type": "ui_chart",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Humidity Chart",
+        "group": "c728bb76.a036c8",
+        "order": 1,
+        "width": "8",
+        "height": "5",
+        "label": "Humidity",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "H",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1e78b4",
+            "#03b300",
+            "#ff7f0e",
+            "#2c5ea0",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 740,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b09d536e.3f84e",
+        "type": "function",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Get CPM",
+        "func": "var f = {topic:\"CPM\", payload:msg.payload.CPM}\nreturn f;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 580,
+        "y": 440,
+        "wires": [
+            [
+                "731d807b.8b176"
+            ]
+        ]
+    },
+    {
+        "id": "731d807b.8b176",
+        "type": "ui_chart",
+        "z": "be5f7bfc.67ffb8",
+        "name": "CPM Chart",
+        "group": "ea3c9544.270528",
+        "order": 6,
+        "width": "12",
+        "height": "5",
+        "label": "Counts Per Minute",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "H",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "10",
+        "ymax": "30",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#2a2aac",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 730,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3a0a3164.77b646",
+        "type": "comment",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Weather Forecast",
+        "info": "",
+        "x": 310,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "162af29c.ca049d",
+        "type": "comment",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Database Archive",
+        "info": "",
+        "x": 280,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "bc62429.9fe814",
+        "type": "comment",
+        "z": "be5f7bfc.67ffb8",
+        "name": "Source Routing",
+        "info": "",
+        "x": 280,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "6a9e99f3.c2af4",
+        "type": "comment",
+        "z": "be5f7bfc.67ffb8",
+        "name": "UI Elements",
+        "info": "",
+        "x": 750,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "77751ab7.3fe3a4",
+        "type": "mqtt-broker",
+        "z": "",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "78b97fe3.d59cf",
+        "type": "MySQLdatabase",
+        "z": "",
+        "name": "data",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "data",
+        "tz": "EST"
+    },
+    {
+        "id": "a7acd625.ab3bf8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Phone",
+        "tab": "daa42c27.15e02",
+        "order": 2,
+        "disp": true,
+        "width": "8",
+        "collapse": false
+    },
+    {
+        "id": "2aa94f08.f1ff8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Weather",
+        "tab": "daa42c27.15e02",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": true
+    },
+    {
+        "id": "c728bb76.a036c8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Sunnyside",
+        "tab": "daa42c27.15e02",
+        "order": 1,
+        "disp": true,
+        "width": "8",
+        "collapse": true
+    },
+    {
+        "id": "ea3c9544.270528",
+        "type": "ui_group",
+        "z": "",
+        "name": "Gamma Radiation",
+        "tab": "daa42c27.15e02",
+        "order": 4,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "daa42c27.15e02",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
