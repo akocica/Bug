@@ -1,4 +1,4 @@
 # Bug
 
 
-![Alt text](Voynich_Manuscript.jpg?raw=true "Node Red")
+![Alt text](bug-node-red.jpg?raw=true "Node Red")
